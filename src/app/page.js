@@ -4,6 +4,8 @@ import 'tailwindcss/tailwind.css';
 import React, { useState } from "react";
 import { useRouter } from 'next/navigation'
 import UserModel from "../../models/User";
+import { useWallet } from '../../context/WalletContext';
+
 
 
 export default function Home() {
@@ -12,6 +14,9 @@ export default function Home() {
   const [password, setPassword] = useState('');
   const userArray=UserModel.getUsers()
 
+  const { disconnectWallet } = useWallet();
+
+  disconnectWallet();
   
   const onChangeEmail = (e) => {
     setEmail(e.target.value);

@@ -1,14 +1,12 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import Web3 from "web3";
 import UserModel from "../../../../models/User";
-import { useRouter } from 'next/navigation'
+import Layout from "../../../../compnents/layout";
 import Link from 'next/link';
 
 const Dashboard = ({ params }) => {
-  const router = useRouter()
-  const [account, setAccount] = useState(null);
+  // const [account, setAccount] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -22,36 +20,32 @@ const Dashboard = ({ params }) => {
   }, [params.User]);
 
 
-  let web3;
+  // let web3;
 
-  const connectWalletHandler = async () => {
-    if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
-      try {
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-        web3 = new Web3(window.ethereum);
-        setAccount(accounts[0]);
-        window.ethereum.on("accountsChanged", (accounts) => {
-          if (accounts.length === 0) {
-            setAccount(null);
-          } else {
-            setAccount(accounts[0]);
-          }
-        });
-      } catch (err) {
-        console.log(err.message);
-      }
-    } else {
-      alert("Please install MetaMask");
-    }
-  };
-
-  // const handleFindHome = () => {
-  //   router.push(`/find?email=${email}`);
+  // const connectWalletHandler = async () => {
+  //   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
+  //     try {
+  //       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+  //       web3 = new Web3(window.ethereum);
+  //       setAccount(accounts[0]);
+  //       window.ethereum.on("accountsChanged", (accounts) => {
+  //         if (accounts.length === 0) {
+  //           setAccount(null);
+  //         } else {
+  //           setAccount(accounts[0]);
+  //         }
+  //       });
+  //     } catch (err) {
+  //       console.log(err.message);
+  //     }
+  //   } else {
+  //     alert("Please install MetaMask");
+  //   }
   // };
 
   return (
-    <div>
-      {/* Navbar */}
+    <Layout>
+      {/* Navbar
       <nav className="flex justify-between items-center bg-gray-800 p-4 text-white">
         <div className="flex items-center">
           <h1 className="text-lg font-bold">SmartPropertyMarket</h1>
@@ -65,7 +59,7 @@ const Dashboard = ({ params }) => {
             </button>
           )}
         </div>
-      </nav>
+      </nav> */}
 
   {/* Main content */}
   <div className="container mx-auto px-4 py-8">
@@ -118,7 +112,7 @@ const Dashboard = ({ params }) => {
       </div>
     </div>
   </div>
-</div>
+</Layout>
 
   );
 };

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import Layout from "../../../compnents/layout";
 
 const FindPage = () => {
   const router = useRouter();
@@ -9,9 +10,9 @@ const FindPage = () => {
   const email = searchParams.get('email')
 
   return (
-    <div>
+    <Layout>
       <h1>Email: {email}</h1>
-    </div>
+    </Layout>
   );
 };
 
