@@ -1,8 +1,8 @@
 const userArray = [
     { id: '1', email: 'ram123@gmail.com', name:'Ramish', password: 'ram123' },
-    { id: '1', email: 'abd123@gmail.com', name:'Abdullah', password: 'abd123' },
+    { id: '2', email: 'abd123@gmail.com', name:'Abdullah', password: 'abd123' },
     // Add more users as needed
-  ];
+];
 
   export default {
     getUsers: () => userArray,
