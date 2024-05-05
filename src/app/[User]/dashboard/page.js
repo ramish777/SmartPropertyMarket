@@ -19,48 +19,8 @@ const Dashboard = ({ params }) => {
     }
   }, [params.User]);
 
-
-  // let web3;
-
-  // const connectWalletHandler = async () => {
-  //   if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
-  //     try {
-  //       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-  //       web3 = new Web3(window.ethereum);
-  //       setAccount(accounts[0]);
-  //       window.ethereum.on("accountsChanged", (accounts) => {
-  //         if (accounts.length === 0) {
-  //           setAccount(null);
-  //         } else {
-  //           setAccount(accounts[0]);
-  //         }
-  //       });
-  //     } catch (err) {
-  //       console.log(err.message);
-  //     }
-  //   } else {
-  //     alert("Please install MetaMask");
-  //   }
-  // };
-
   return (
     <Layout>
-      {/* Navbar
-      <nav className="flex justify-between items-center bg-gray-800 p-4 text-white">
-        <div className="flex items-center">
-          <h1 className="text-lg font-bold">SmartPropertyMarket</h1>
-        </div>
-        <div>
-          {account ? (
-            <p className="text-sm">{`Wallet Connected !!!`}</p>
-          ) : (
-            <button className="bg-white text-gray-800 py-2 px-4 rounded hover:bg-gray-200 transition duration-300 ease-in-out" onClick={connectWalletHandler}>
-              Connect Wallet
-            </button>
-          )}
-        </div>
-      </nav> */}
-
   {/* Main content */}
   <div className="container mx-auto px-4 py-8">
     {/* Welcome message */}
@@ -78,9 +38,14 @@ const Dashboard = ({ params }) => {
           Find a Home
         </button>
       </Link>
+      <Link href={{
+            pathname:'/sell',
+            query: {email : email}
+          }}>
       <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 transition duration-300 ease-in-out">
         Sell a Home
       </button>
+      </Link>
     </div>
 
     {/* Selling and Buying sections */}

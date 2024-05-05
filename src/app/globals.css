@@ -38,15 +38,14 @@ body {
 }
 
 .boxes {
-  display: flex; /* Use flexbox */
-  flex-wrap: wrap; /* Wrap items to next line if needed */
+  display: flex;
+  flex-wrap: wrap;
   padding-top: 20px;
   padding-left: 40px;
   padding-right: 40px;
 }
 
 .buy-now {
-  /* Add styles for the button */
   background-color: blue;
   color: white;
   padding: 8px 16px;
@@ -57,7 +56,6 @@ body {
 }
 
 .buy-now:hover {
-  /* Add styles for the button on hover */
   background-color: darkblue;
 }
 
@@ -74,4 +72,57 @@ body {
   align-items: center;
   margin-top: 20px;
   padding: 10px;
+}
+
+.SellHome {
+  font-family: Arial, sans-serif;
+}
+
+.SellHome-content {
+  max-width: 800px;
+  width: 80%;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 30px;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.input-field {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.submit-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+.SellHome-link {
+  color: #61dafb;
 }

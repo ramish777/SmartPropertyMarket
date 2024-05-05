@@ -6,6 +6,7 @@ const propertyArray = [
 ];
 
 export default  {
+  propertyArray: propertyArray,
   getProperties: () => propertyArray,
   getPropertyById: (id) => propertyArray.find(property => property.id === id),
   getPropertiesByEmail: (email) => propertyArray.filter(property => property.formedBy !== email),
