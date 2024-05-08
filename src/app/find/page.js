@@ -28,7 +28,7 @@ const FindPage = () => {
   return (
     <Layout>
 
-      <div class="boxes">
+      <div className="boxes">
                 {propertyCards.map((challenge, index) => (
                         <PropertyCard key={index} {...challenge} />
                     ))}

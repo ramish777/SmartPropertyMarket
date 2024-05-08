@@ -12,7 +12,7 @@ const Navbar = () => {
       </div>
       <div>
         {account ? (
-          <p style={{ fontSize: '0.875rem', marginRight: '1rem' }}>Wallet Connected !!!</p>
+          <p style={{ fontSize: '0.875rem', marginRight: '1rem' }}>Wallet Connected: {account}</p>
         ) : (
           <button
             style={{ background: '#fff', color: '#333', padding: '0.5rem 1rem', borderRadius: '0.25rem', cursor: 'pointer', border: 'none', marginRight: '1rem' }}

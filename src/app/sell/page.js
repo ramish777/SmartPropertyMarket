@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 import Layout from "../../../compnents/layout";
 import PropertyModel from "../../../models/PropertyAd";
+import UserModel from "../../../models/User";
 import { useRouter } from 'next/navigation'
+import  vmContract  from '../../../blockchain/smart_contract'
 
 const SellPage = () => {
     const searchParams = useSearchParams()
@@ -13,8 +15,55 @@ const SellPage = () => {
     const [description, setDescription] = useState('');
     const [budget, setBudget] = useState('');
     const [address, setAddress] = useState('');
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [userArray, setUserArray] = useState([]); // State to hold user data
     const router = useRouter();
+
+    useEffect(() => {
+        // Load user data when the component mounts
+        const fetchData = async () => {
+            try {
+                // Fetch user data from UserModel
+                const userData = await UserModel.getUsers(); // Example: replace with actual method to fetch user data
+                setUserArray(userData); // Update userArray state with fetched data
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+        fetchData(); // Call fetchData function
+    }, []); // Run effect only on component mount
+
+    const addHome = async (title, description, budget, address, ownerName) => {
+        try {
+            const walletAddr = getWalletAddressByEmail(email);
+    
+            // Estimate gas needed for the transaction
+            const estimatedGas = await vmContract.methods
+                .addHome(title, description, budget, address, ownerName)
+                .estimateGas({ from: walletAddr });
+    
+            // Send the transaction with the dynamically estimated gas limit
+            const transactionReceipt = await vmContract.methods
+                .addHome(title, description, budget, address, ownerName)
+                .send({ from: walletAddr, gas: estimatedGas });
+    
+            console.log("Transaction successful. Transaction Receipt:", transactionReceipt);
+            console.log("Home added successfully");
+        } catch (error) {
+            console.error("Error adding home:", error);
+        }
+    };
+    
+    const getWalletAddressByEmail = (email) => {
+        // Find the user object with the given email
+        const user = userArray.find(user => user.email === email);
+    
+        // If user is found, return the wallet address
+        if (user) {
+            return user.wallet;
+        } else {
+            return null; // Return null if user is not found
+        }
+    };
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
@@ -31,11 +80,6 @@ const SellPage = () => {
     const handleAddressChange = (event) => {
         setAddress(event.target.value);
     };
-
-    const handleImageChange = (event) => {
-        setSelectedImage(event.target.files[0]);
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -55,6 +99,8 @@ const SellPage = () => {
         console.log('New Property:', newProperty);
         console.log('Property Array:', PropertyModel.propertyArray);
         alert("Added Property:", newProperty);
+
+        addHome(title,description,budget,address,email);
 
         let User=email.split('@')[0];
         router.push(`/${User}/dashboard`)
@@ -109,17 +155,6 @@ const SellPage = () => {
                                 value={address}
                                 onChange={handleAddressChange}
                                 placeholder="Enter address..."
-                                className="input-field"
-                                style={{ width: '100%', padding: '10px', color: 'black' }}
-                            />
-                        </div>
-                        <div className="input-group">
-                            <label htmlFor="image" className="input-label">Upload Image:</label>
-                            <input
-                                type="file"
-                                id="image"
-                                accept="image/*"
-                                onChange={handleImageChange}
                                 className="input-field"
                                 style={{ width: '100%', padding: '10px', color: 'black' }}
                             />

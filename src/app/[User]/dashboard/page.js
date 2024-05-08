@@ -4,20 +4,49 @@ import React, { useState, useEffect } from "react";
 import UserModel from "../../../../models/User";
 import Layout from "../../../../compnents/layout";
 import Link from 'next/link';
+import { useWallet } from "../../../../context/WalletContext";
 
 const Dashboard = ({ params }) => {
+  //const { account } = useWallet();
   // const [account, setAccount] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  //const [user, setUser] = useState(null); 
+  // const [count,setCount] = useState(0);
 
   useEffect(() => {
-    // Find user data and extract name
-    const user = UserModel.getUsers().find(user => user.email.split('@')[0] === params.User);
-    if (user) {
-      setName(user.name);
-      setEmail(user.email);
-    }
+    const fetchData = async () => {
+      try {
+        const userData = UserModel.getUsers().find(user => user.email.split('@')[0] === params.User);
+        if (userData) {
+          //setUser(userData);
+          setName(userData.name);
+          setEmail(userData.email);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchData();
   }, [params.User]);
+
+  // const updateUserWallet = async () => {
+  //   try {
+  //     if (user && account) {
+  //       const updatedUser = { ...user, wallet: account };
+  //       setUser(updatedUser);
+  //       console.log(updatedUser);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating user wallet:", error);
+  //   }
+  // };
+
+  // if (account !== null && count===0) {
+  //   updateUserWallet();
+  //   setCount(1);
+  // }
 
   return (
     <Layout>

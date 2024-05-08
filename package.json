@@ -6,12 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "compile": "solcjs --abi --include-path node_modules/ --base-path . blockchain/contracts/S_b_property.sol --output-dir blockchain/build"
   },
   "dependencies": {
+    "mongoose": "^8.3.4",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "solc": "^0.8.25",
     "swr": "^2.2.5",
     "web3": "^4.8.0"
   },
