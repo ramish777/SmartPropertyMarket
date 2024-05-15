@@ -3,6 +3,7 @@ pragma solidity ^0.8.11;
 
 contract PropertySale {
      struct Home {
+        uint homeId;
         string title;
         string description;
         uint budget;
@@ -15,42 +16,53 @@ contract PropertySale {
     mapping (uint => Home) public homes;
     uint public homeCount;
 
-    function addHome(string memory _title, string memory _description, uint _budget, string memory _addresss, string memory _ownerName) public {
+    function addHome(uint256 _homeId, string memory _title, string memory _description, uint _budget, string memory _addresss, string memory _ownerName) public {
         require(msg.sender != address(0), "Only non-zero addresses can add homes");
         homeCount++;
-        homes[homeCount] = Home(_title, _description, _budget, _addresss, false, msg.sender, _ownerName);
+        homes[homeCount] = Home(_homeId, _title, _description, _budget, _addresss, false, msg.sender, _ownerName);
     }
 
     function getHome(uint _homeId) public view returns (string memory, string memory, uint, string memory, bool, address, string memory) {
         return (homes[_homeId].title, homes[_homeId].description, homes[_homeId].budget, homes[_homeId].addresss, homes[_homeId].isSold, homes[_homeId].owner, homes[_homeId].ownerName);
     }
 
-    function buyHome(uint256 _homeId, address _buyerAddress, string memory _buyerName) public payable {
-        require(_buyerAddress != address(0), "Invalid buyer address");
-        require(homes[_homeId].isSold == false, "Home is already sold");
-        require(msg.value >= homes[_homeId].budget, "Insufficient funds");
+    function buyHome(uint256 _homeId, string memory _buyerName) public payable {
+        // Retrieve all homes
+        Home[] memory allHomes = getAllHomes();
 
-        // Retrieve the owner's wallet address
-        address payable ownerAddress = payable(homes[_homeId].owner);
+        // Iterate through homes to find the one with the matching homeId
+        for (uint i = 0; i < allHomes.length; i++) {
+            if (allHomes[i].homeId == _homeId) {
+                // Check if the home is not already sold
+                require(allHomes[i].isSold == false, "Home is already sold");
 
-        // Transfer funds to the owner of the house
-        ownerAddress.transfer(homes[_homeId].budget);
+                // Check if the buyer has sent enough funds to purchase the home
+                require(msg.value >= allHomes[i].budget, "Insufficient funds");
 
-        // Update the owner's name
-        homes[_homeId].ownerName = _buyerName;
+                // Transfer funds from the buyer to the owner
+                payable(allHomes[i].owner).transfer(allHomes[i].budget);
 
-        // Update the owner's address
-        homes[_homeId].owner = _buyerAddress;
+                // Update the owner's name
+                allHomes[i].ownerName = _buyerName;
 
-        // Mark the home as sold
-        homes[_homeId].isSold = true;
+                // Update the owner's address
+                allHomes[i].owner = msg.sender;
+
+                // Mark the home as sold
+                allHomes[i].isSold = true;
+
+                // Exit loop once the home is found and processed
+                break;
+            }
+        }
     }
 
-    function getAllHomeIds() public view returns (uint[] memory) {
-        uint[] memory homeIds = new uint[](homeCount);
-        for (uint i = 1; i <= homeCount; i++) {
-            homeIds[i - 1] = i;
-        }
-        return homeIds;
-    }    
+    function getAllHomes() public view returns (Home[] memory) {
+    Home[] memory allHomes = new Home[](homeCount);
+    for (uint i = 1; i <= homeCount; i++) {
+        allHomes[i - 1] = homes[i];
+    }
+    return allHomes;
+    }   
 }
+

@@ -1,22 +1,48 @@
 'use client'
 
 import 'tailwindcss/tailwind.css';
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRouter } from 'next/navigation'
 import UserModel from "../../models/User";
 import { useWallet } from '../../context/WalletContext';
-
+import vmContract from '../../blockchain/smart_contract';
+import PropertyModel from '../../models/PropertyAd';
 
 
 export default function Home() {
   const router = useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [count, setCount] = useState(0);
+
   const userArray=UserModel.getUsers()
 
   const { disconnectWallet } = useWallet();
 
   disconnectWallet();
+
+  // const fetchHomes = async () => {
+  //   try {
+  //     const allHomes = await vmContract.methods.getAllHomes().call();
+  //     for(let i=0;i<allHomes.length;i++) {
+  //       const newProperty = {
+  //         id: (PropertyModel.propertyArray.length + 1).toString(), // Generate id based on the length of propertyArray
+  //         name: allHomes[i].title,
+  //         description: allHomes[i].description,
+  //         price: parseInt(allHomes[i].budget.toString()),
+  //         address: allHomes[i].addresss,
+  //         formedBy: allHomes[i].ownerName
+  //       };
+  //       PropertyModel.propertyArray.push(newProperty);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching homes:', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchHomes();
+  // }, []);
   
   const onChangeEmail = (e) => {
     setEmail(e.target.value);
